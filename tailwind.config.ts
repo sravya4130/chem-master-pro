@@ -7,12 +7,18 @@ export default {
   theme: {
     container: {
       center: true,
-      padding: "2rem",
+      padding: "1rem",
       screens: {
-        "2xl": "1400px",
+        sm: "640px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1280px",
       },
     },
     extend: {
+      fontFamily: {
+        nunito: ["Nunito", "sans-serif"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -39,6 +45,14 @@ export default {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
         },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
+        },
+        warning: {
+          DEFAULT: "hsl(var(--warning))",
+          foreground: "hsl(var(--warning-foreground))",
+        },
         popover: {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
@@ -57,28 +71,45 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        game: {
+          xp: "hsl(var(--xp-gold))",
+          streak: "hsl(var(--streak-orange))",
+          level: "hsl(var(--level-purple))",
+        },
+        topic: {
+          blue: "hsl(var(--topic-blue))",
+          green: "hsl(var(--topic-green))",
+          pink: "hsl(var(--topic-pink))",
+        },
+        tutor: {
+          alex: "hsl(var(--tutor-alex))",
+          david: "hsl(var(--tutor-david))",
+          sravya: "hsl(var(--tutor-sravya))",
+          olivia: "hsl(var(--tutor-olivia))",
+          mermi: "hsl(var(--tutor-mermi))",
+          ogneson: "hsl(var(--tutor-ogneson))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        xl: "calc(var(--radius) + 4px)",
+        "2xl": "calc(var(--radius) + 8px)",
+      },
+      boxShadow: {
+        game: "0 4px 20px -2px hsl(var(--primary) / 0.25)",
+        card: "0 2px 12px -2px hsl(220 25% 10% / 0.08)",
+        "card-hover": "0 8px 30px -4px hsl(220 25% 10% / 0.15)",
       },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
         },
       },
       animation: {
