@@ -61,6 +61,4 @@ const SelectTutor = () => {
     </AppLayout>
   );
 };
-
 export default SelectTutor;
-2nd one 
