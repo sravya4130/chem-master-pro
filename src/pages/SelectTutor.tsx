@@ -9,6 +9,24 @@ const SelectTutor = () => {
   const navigate = useNavigate();
   const { tutors, selectedTutor, setSelectedTutor } = useApp();
 
+  // 🔊 Speak like Duolingo tutor
+  const speakTutor = (name: string) => {
+    if (!('speechSynthesis' in window)) return;
+
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(
+      `Hi! I am ${name}. I will help you learn step by step.`
+    );
+    utterance.rate = 0.95;
+    utterance.pitch = 1.1;
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const handleTutorSelect = (tutor: any) => {
+    setSelectedTutor(tutor);
+    speakTutor(tutor.name);
+  };
+
   const handleContinue = () => {
     if (selectedTutor) {
       navigate('/topics');
@@ -40,7 +58,7 @@ const SelectTutor = () => {
                 key={tutor.id}
                 tutor={tutor}
                 isSelected={selectedTutor?.id === tutor.id}
-                onClick={() => setSelectedTutor(tutor)}
+                onClick={() => handleTutorSelect(tutor)}
               />
             ))}
           </div>
