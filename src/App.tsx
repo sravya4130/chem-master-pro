@@ -73,7 +73,6 @@ const AppRoutes = () => {
       <Route path="/about" element={<About />} />
       <Route path="/learn/:topicId" element={<Learn />} />
       <Route path="/game/iupac" element={<GameIUPAC />} />
-      <Route path="*" element={<NotFound />} />
       <Route path="/game/sigma-pi" element={<GameSigmaPi />} />
 
     </Routes>
