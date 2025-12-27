@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import LearnIUPAC from './LearnIUPAC';
+import LearnHybridisation from './LearnHybridisation';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Construction } from 'lucide-react';
@@ -11,6 +12,10 @@ const Learn = () => {
   // Route to specific topic pages
   if (topicId === 'iupac') {
     return <LearnIUPAC />;
+  }
+
+  if (topicId === 'hybridisation') {
+    return <LearnHybridisation />;
   }
 
   // Coming soon page for other topics
