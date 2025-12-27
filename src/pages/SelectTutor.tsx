@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { useApp } from '@/contexts/AppContext';
 import { TutorCard } from '@/components/tutors/TutorCard';
@@ -8,11 +9,17 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 const SelectTutor = () => {
   const navigate = useNavigate();
   const { tutors, selectedTutor, setSelectedTutor } = useApp();
+  const [showMessage, setShowMessage] = useState(false);
 
   const handleContinue = () => {
     if (selectedTutor) {
       navigate('/topics');
     }
+  };
+
+  const handleTutorClick = (tutor: any) => {
+    setSelectedTutor(tutor);
+    setShowMessage(true);
   };
 
   return (
@@ -38,13 +45,25 @@ const SelectTutor = () => {
             {tutors.map((tutor) => (
               <TutorCard
                 key={tutor.id}
-                tutor={tutor}
+                tutor={tutor}   // 3D doll avatar comes from tutor data
                 isSelected={selectedTutor?.id === tutor.id}
-                onClick={() => setSelectedTutor(tutor)}
+                onClick={() => handleTutorClick(tutor)}
               />
             ))}
           </div>
         </div>
+
+        {/* Tutor Message Box */}
+        {showMessage && selectedTutor && (
+          <div className="mx-6 mb-24 bg-card rounded-2xl p-4 shadow-card">
+            <p className="font-semibold mb-1">
+              Welcome, I am {selectedTutor.name}
+            </p>
+            <p className="text-sm text-muted-foreground">
+              I will guide you through your learning journey and help you master every concept.
+            </p>
+          </div>
+        )}
 
         {/* Continue Button */}
         <div className="fixed bottom-0 left-0 right-0 p-4 bg-background/80 backdrop-blur-lg border-t border-border">
@@ -61,4 +80,5 @@ const SelectTutor = () => {
     </AppLayout>
   );
 };
+
 export default SelectTutor;
