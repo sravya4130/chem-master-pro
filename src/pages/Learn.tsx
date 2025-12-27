@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import LearnIUPAC from './LearnIUPAC';
 import LearnHybridisation from './LearnHybridisation';
+import LearnSigmaPi from './LearnSigmaPi';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Construction } from 'lucide-react';
@@ -16,6 +17,10 @@ const Learn = () => {
 
   if (topicId === 'hybridisation') {
     return <LearnHybridisation />;
+  }
+
+  if (topicId === 'sigma-pi-bonds') {
+    return <LearnSigmaPi />;
   }
 
   // Coming soon page for other topics

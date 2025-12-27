@@ -62,11 +62,7 @@ const Topics = () => {
             <TopicCard
               key={topic.id}
               {...topic}
-              onClick={() =>
-                topic.id === 'sigma-pi-bonds'
-                  ? navigate('/game/sigma-pi')  // <-- Changed only this line
-                  : navigate(`/learn/${topic.id}`)
-              }
+              onClick={() => navigate(`/learn/${topic.id}`)}
             />
           ))}
         </div>
