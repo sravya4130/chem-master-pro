@@ -1,109 +1,363 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { useApp } from '@/contexts/AppContext';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { GameTimer } from '@/components/game/GameTimer';
 import { ScoreDisplay } from '@/components/game/ScoreDisplay';
-import { sigmaPiQuestions } from '@/data/sigmaPiData';
-import { ArrowRight, Check, X, RotateCcw } from 'lucide-react';
+import { sigmaPiQuestions, SigmaPiQuestion } from '@/data/sigmaPiBondsData';
+import { ArrowRight, Lightbulb, X, Check, Trophy, RotateCcw, Link2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { cn } from '@/lib/utils';
 
 const GameSigmaPi = () => {
   const navigate = useNavigate();
-  const { addXP, setUserProgress } = useApp();
-
-  const [index, setIndex] = useState(0);
-  const [answer, setAnswer] = useState('');
+  const { addXP, selectedTutor, setUserProgress } = useApp();
+  
+  const [gameState, setGameState] = useState<'ready' | 'playing' | 'checking' | 'finished'>('ready');
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [score, setScore] = useState(0);
-  const [state, setState] = useState<'ready' | 'playing' | 'checking' | 'finished'>('ready');
+  const [streak, setStreak] = useState(0);
+  const [xpEarned, setXpEarned] = useState(0);
+  const [hintsUsed, setHintsUsed] = useState(0);
+  const [showHint, setShowHint] = useState(false);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+  const [timerDuration, setTimerDuration] = useState(45);
+  const [shuffledQuestions, setShuffledQuestions] = useState<SigmaPiQuestion[]>([]);
 
-  const current = sigmaPiQuestions[index];
+  useEffect(() => {
+    const shuffled = [...sigmaPiQuestions].sort(() => Math.random() - 0.5);
+    setShuffledQuestions(shuffled);
+  }, []);
 
-  const checkAnswer = () => {
-    const correct =
-      answer.trim().toLowerCase() === current.name.toLowerCase();
+  const currentQuestion = shuffledQuestions[currentQuestionIndex];
 
+  const handleTimeUp = useCallback(() => {
+    setIsCorrect(false);
+    setStreak(0);
+    setGameState('checking');
+    toast.error("Time's up!");
+  }, []);
+
+  const checkAnswer = (answer: string) => {
+    if (!currentQuestion) return;
+    
+    setSelectedAnswer(answer);
+    const correct = answer === currentQuestion.correctAnswer;
     setIsCorrect(correct);
-    setState('checking');
+    setGameState('checking');
 
     if (correct) {
-      addXP(current.xpReward);
-      setScore(s => s + 1);
-      toast.success(`+${current.xpReward} XP`);
+      const bonusXP = streak >= 3 ? 5 : 0;
+      const hintPenalty = hintsUsed > 0 ? Math.floor(currentQuestion.xpReward * 0.3 * hintsUsed) : 0;
+      const earnedXP = Math.max(currentQuestion.xpReward - hintPenalty + bonusXP, 5);
+      
+      setScore(prev => prev + 1);
+      setStreak(prev => prev + 1);
+      setXpEarned(prev => prev + earnedXP);
+      addXP(earnedXP);
+      toast.success(`+${earnedXP} XP! ${streak >= 2 ? '🔥 Streak bonus!' : ''}`);
     } else {
-      toast.error('Wrong answer');
+      setStreak(0);
+      toast.error('Not quite right!');
     }
   };
 
-  const next = () => {
-    if (index < sigmaPiQuestions.length - 1) {
-      setIndex(i => i + 1);
-      setAnswer('');
+  const nextQuestion = () => {
+    if (currentQuestionIndex < shuffledQuestions.length - 1) {
+      setCurrentQuestionIndex(prev => prev + 1);
+      setSelectedAnswer(null);
       setIsCorrect(null);
-      setState('playing');
+      setHintsUsed(0);
+      setShowHint(false);
+      setGameState('playing');
     } else {
-      setState('finished');
-      setUserProgress(p => ({
-        ...p,
-        completedTopics: [...p.completedTopics, 'sigma-pi']
+      setGameState('finished');
+      setUserProgress(prev => ({
+        ...prev,
+        streak: prev.streak + 1,
+        completedTopics: prev.completedTopics.includes('sigma-pi-bonds') 
+          ? prev.completedTopics 
+          : [...prev.completedTopics, 'sigma-pi-bonds']
       }));
     }
   };
 
-  if (state === 'ready') {
+  const useHint = () => {
+    if (hintsUsed < (currentQuestion?.hints.length || 0)) {
+      setShowHint(true);
+      setHintsUsed(prev => prev + 1);
+      toast.info('Hint revealed! (-30% XP for this question)');
+    }
+  };
+
+  const restartGame = () => {
+    const shuffled = [...sigmaPiQuestions].sort(() => Math.random() - 0.5);
+    setShuffledQuestions(shuffled);
+    setCurrentQuestionIndex(0);
+    setSelectedAnswer(null);
+    setScore(0);
+    setStreak(0);
+    setXpEarned(0);
+    setHintsUsed(0);
+    setShowHint(false);
+    setIsCorrect(null);
+    setGameState('ready');
+  };
+
+  if (gameState === 'ready') {
     return (
-      <AppLayout title="Sigma & Pi Bond Game">
-        <div className="p-6 text-center">
-          <Button onClick={() => setState('playing')}>Start Game</Button>
+      <AppLayout title="Sigma & Pi Quiz">
+        <div className="p-4 pb-8 flex flex-col min-h-[calc(100vh-56px)]">
+          <div className="flex-1 flex flex-col items-center justify-center text-center">
+            <div className="w-20 h-20 rounded-full bg-topic-green/20 flex items-center justify-center mb-6 animate-bounce-in">
+              <Link2 className="h-10 w-10 text-topic-green" />
+            </div>
+            <h2 className="text-2xl font-bold mb-2">Bond Counting Quiz</h2>
+            <p className="text-muted-foreground mb-6">
+              Test your knowledge of sigma and pi bonds!
+            </p>
+
+            {/* Timer Selection */}
+            <div className="mb-8">
+              <p className="text-sm text-muted-foreground mb-3">Time per question:</p>
+              <div className="flex gap-2 flex-wrap justify-center">
+                {[20, 30, 45, 60, 90].map((sec) => (
+                  <button
+                    key={sec}
+                    onClick={() => setTimerDuration(sec)}
+                    className={`px-4 py-2 rounded-xl font-medium transition-all ${
+                      timerDuration === sec
+                        ? 'bg-topic-green text-primary-foreground'
+                        : 'bg-secondary hover:bg-secondary/80'
+                    }`}
+                  >
+                    {sec}s
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {selectedTutor && (
+              <div className="bg-card rounded-xl p-4 shadow-card mb-6 max-w-sm">
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">{selectedTutor.emoji}</span>
+                  <p className="text-sm text-left">
+                    "{selectedTutor.name} says: Remember — single bond = 1σ, double = 1σ+1π, triple = 1σ+2π!"
+                  </p>
+                </div>
+              </div>
+            )}
+
+            <Button
+              onClick={() => setGameState('playing')}
+              className="h-14 px-8 text-lg font-bold gap-2 bg-topic-green hover:bg-topic-green/90"
+            >
+              Start Quiz
+              <ArrowRight className="h-5 w-5" />
+            </Button>
+          </div>
         </div>
       </AppLayout>
     );
   }
 
-  if (state === 'finished') {
+  if (gameState === 'finished') {
+    const accuracy = Math.round((score / shuffledQuestions.length) * 100);
+    
     return (
-      <AppLayout title="Completed">
-        <div className="p-6 text-center">
-          <p className="text-xl font-bold">Score: {score}</p>
-          <Button onClick={() => navigate('/topics')}>Back to Topics</Button>
+      <AppLayout title="Quiz Complete!">
+        <div className="p-4 pb-8 flex flex-col min-h-[calc(100vh-56px)]">
+          <div className="flex-1 flex flex-col items-center justify-center text-center">
+            <div className="text-6xl mb-4 animate-bounce-in">
+              {accuracy >= 80 ? '🏆' : accuracy >= 60 ? '⭐' : '💪'}
+            </div>
+            <h2 className="text-3xl font-bold mb-2">
+              {accuracy >= 80 ? 'Excellent!' : accuracy >= 60 ? 'Good Job!' : 'Keep Practicing!'}
+            </h2>
+            
+            <div className="bg-card rounded-2xl p-6 shadow-card mt-6 w-full max-w-sm">
+              <div className="flex justify-center mb-6">
+                <Trophy className="h-16 w-16 text-game-xp" />
+              </div>
+              
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground">Score</span>
+                  <span className="font-bold text-xl">{score}/{shuffledQuestions.length}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground">XP Earned</span>
+                  <span className="font-bold text-xl text-game-xp">+{xpEarned}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground">Accuracy</span>
+                  <span className="font-bold text-xl">{accuracy}%</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-3 mt-8">
+              <Button variant="outline" onClick={restartGame}>
+                <RotateCcw className="h-4 w-4 mr-2" />
+                Play Again
+              </Button>
+              <Button onClick={() => navigate('/topics')} className="bg-topic-green hover:bg-topic-green/90">
+                Back to Topics
+              </Button>
+            </div>
+          </div>
         </div>
       </AppLayout>
     );
   }
 
   return (
-    <AppLayout title={`Question ${index + 1}`}>
-      <div className="p-6">
-        <ScoreDisplay score={score} streak={0} xpEarned={0} />
-
-        <div className="bg-card p-4 rounded-xl mt-4">
-          <p className="mb-4">{current.structure}</p>
-
-          {state === 'playing' && (
-            <>
-              <Input
-                value={answer}
-                onChange={e => setAnswer(e.target.value)}
-                placeholder="Your answer"
+    <AppLayout title={`Question ${currentQuestionIndex + 1}/${shuffledQuestions.length}`}>
+      <div className="p-4 pb-8">
+        {/* Progress & Timer */}
+        <div className="mb-6">
+          <div className="flex gap-1 mb-4">
+            {shuffledQuestions.map((_, i) => (
+              <div
+                key={i}
+                className={`flex-1 h-2 rounded-full transition-colors ${
+                  i < currentQuestionIndex ? 'bg-success' :
+                  i === currentQuestionIndex ? 'bg-topic-green' : 'bg-muted'
+                }`}
               />
-              <Button onClick={checkAnswer} className="mt-4">Check</Button>
-            </>
-          )}
-
-          {state === 'checking' && (
-            <>
-              <p className="mt-4">
-                {isCorrect ? 'Correct!' : `Correct answer: ${current.name}`}
-              </p>
-              <Button onClick={next} className="mt-4">
-                Next <ArrowRight />
-              </Button>
-            </>
+            ))}
+          </div>
+          
+          {gameState === 'playing' && (
+            <GameTimer
+              duration={timerDuration}
+              onTimeUp={handleTimeUp}
+              isRunning={gameState === 'playing'}
+            />
           )}
         </div>
+
+        {/* Score Display */}
+        <ScoreDisplay
+          score={score}
+          streak={streak}
+          xpEarned={xpEarned}
+          className="justify-center mb-6"
+        />
+
+        {/* Question */}
+        {currentQuestion && (
+          <div className="bg-card rounded-2xl p-6 shadow-card">
+            <div className="flex items-center gap-2 mb-4">
+              <span className={`text-xs px-2 py-1 rounded-full ${
+                currentQuestion.difficulty === 'easy' ? 'bg-success/20 text-success' :
+                currentQuestion.difficulty === 'medium' ? 'bg-warning/20 text-warning' :
+                'bg-destructive/20 text-destructive'
+              }`}>
+                {currentQuestion.difficulty}
+              </span>
+              <span className={`text-xs px-2 py-1 rounded-full bg-topic-green/20 text-topic-green`}>
+                {currentQuestion.type}
+              </span>
+              <span className="text-xs text-muted-foreground ml-auto">
+                +{currentQuestion.xpReward} XP
+              </span>
+            </div>
+
+            <p className="text-lg font-medium mb-2">{currentQuestion.question}</p>
+            
+            {currentQuestion.structure && (
+              <div className="bg-secondary rounded-xl p-4 mb-4">
+                <p className="font-mono text-xl text-center text-topic-green">{currentQuestion.structure}</p>
+              </div>
+            )}
+
+            {currentQuestion.molecule && !currentQuestion.structure && (
+              <div className="bg-secondary rounded-xl p-4 mb-4">
+                <p className="font-mono text-xl text-center text-topic-green">{currentQuestion.molecule}</p>
+              </div>
+            )}
+
+            {/* Hint */}
+            {showHint && hintsUsed > 0 && (
+              <div className="bg-warning/10 rounded-xl p-3 mb-4 border border-warning/30">
+                <p className="text-sm">
+                  <Lightbulb className="h-4 w-4 inline mr-2 text-warning" />
+                  {currentQuestion.hints[hintsUsed - 1]}
+                </p>
+              </div>
+            )}
+
+            {/* Answer Options */}
+            {gameState === 'playing' && (
+              <>
+                <div className="grid grid-cols-2 gap-3 mb-4">
+                  {currentQuestion.options.map((option, i) => (
+                    <button
+                      key={i}
+                      onClick={() => checkAnswer(option)}
+                      className={cn(
+                        "p-4 rounded-xl text-center font-medium transition-all",
+                        "bg-secondary hover:bg-secondary/80 hover:scale-[1.02] active:scale-[0.98]",
+                        "border-2 border-transparent hover:border-topic-green/50"
+                      )}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+                
+                <Button
+                  variant="outline"
+                  onClick={useHint}
+                  disabled={hintsUsed >= currentQuestion.hints.length}
+                  className="w-full gap-2"
+                >
+                  <Lightbulb className="h-4 w-4" />
+                  Use Hint ({currentQuestion.hints.length - hintsUsed} left)
+                </Button>
+              </>
+            )}
+
+            {/* Result */}
+            {gameState === 'checking' && (
+              <div className={`rounded-xl p-6 text-center ${
+                isCorrect ? 'bg-success/10' : 'bg-destructive/10'
+              }`}>
+                <div className={`w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center ${
+                  isCorrect ? 'bg-success' : 'bg-destructive'
+                }`}>
+                  {isCorrect ? (
+                    <Check className="h-8 w-8 text-success-foreground" />
+                  ) : (
+                    <X className="h-8 w-8 text-destructive-foreground" />
+                  )}
+                </div>
+                
+                <h3 className="font-bold text-xl mb-2">
+                  {isCorrect ? 'Correct!' : 'Not quite!'}
+                </h3>
+                
+                {!isCorrect && (
+                  <p className="text-muted-foreground mb-2">
+                    The correct answer is: <span className="font-bold text-foreground">{currentQuestion.correctAnswer}</span>
+                  </p>
+                )}
+                
+                <p className="text-sm text-muted-foreground mb-4 bg-card rounded-lg p-3">
+                  {currentQuestion.explanation}
+                </p>
+
+                <Button onClick={nextQuestion} className="bg-topic-green hover:bg-topic-green/90">
+                  {currentQuestionIndex < shuffledQuestions.length - 1 ? 'Next Question' : 'See Results'}
+                  <ArrowRight className="h-4 w-4 ml-2" />
+                </Button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </AppLayout>
   );
