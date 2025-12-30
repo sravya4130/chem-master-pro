@@ -1,23 +1,27 @@
 import { Tutor } from '@/contexts/AppContext';
 import { cn } from '@/lib/utils';
 import { Check } from 'lucide-react';
+import { TutorAvatar3D } from './TutorAvatar3D';
 
 interface TutorCardProps {
   tutor: Tutor;
   isSelected: boolean;
   onClick: () => void;
+  isSpeaking?: boolean;
 }
 
-const colorMap: Record<string, string> = {
-  'tutor-alex': 'bg-tutor-alex',
-  'tutor-david': 'bg-tutor-david',
-  'tutor-sravya': 'bg-tutor-sravya',
-  'tutor-olivia': 'bg-tutor-olivia',
-  'tutor-mermi': 'bg-tutor-mermi',
-  'tutor-ogneson': 'bg-tutor-ogneson',
+const colorHexMap: Record<string, string> = {
+  'tutor-alex': '#6366f1',
+  'tutor-david': '#22c55e',
+  'tutor-sravya': '#f43f5e',
+  'tutor-olivia': '#f59e0b',
+  'tutor-mermi': '#06b6d4',
+  'tutor-ogneson': '#8b5cf6',
 };
 
-export const TutorCard = ({ tutor, isSelected, onClick }: TutorCardProps) => {
+export const TutorCard = ({ tutor, isSelected, onClick, isSpeaking = false }: TutorCardProps) => {
+  const avatarColor = colorHexMap[tutor.color] || '#6366f1';
+
   return (
     <button
       onClick={onClick}
@@ -35,11 +39,12 @@ export const TutorCard = ({ tutor, isSelected, onClick }: TutorCardProps) => {
         </div>
       )}
       
-      <div className={cn(
-        'w-16 h-16 rounded-full flex items-center justify-center mb-4',
-        colorMap[tutor.color] || 'bg-primary'
-      )}>
-        <span className="text-3xl">{tutor.emoji}</span>
+      <div className="mb-4">
+        <TutorAvatar3D 
+          color={avatarColor} 
+          isSelected={isSelected} 
+          isSpeaking={isSpeaking}
+        />
       </div>
       
       <h3 className="font-bold text-lg">{tutor.name}</h3>
