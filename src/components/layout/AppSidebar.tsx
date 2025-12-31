@@ -10,7 +10,10 @@ import {
   Settings, 
   GraduationCap,
   Flame,
-  Trophy
+  Trophy,
+  UserPlus,
+  CreditCard,
+  Award
 } from 'lucide-react';
 import { NavLink } from '@/components/NavLink';
 import { useApp } from '@/contexts/AppContext';
@@ -20,8 +23,11 @@ const navItems = [
   { to: '/', icon: Home, label: 'Home' },
   { to: '/topics', icon: FlaskConical, label: 'Chemistry Topics' },
   { to: '/tutors', icon: GraduationCap, label: 'Tutors' },
+  { to: '/achievements', icon: Award, label: 'Achievements' },
   { to: '/friends', icon: Users, label: 'Friends' },
   { to: '/messages', icon: MessageCircle, label: 'Messages' },
+  { to: '/pricing', icon: CreditCard, label: 'Pricing' },
+  { to: '/signup', icon: UserPlus, label: 'Sign Up' },
   { to: '/about', icon: Info, label: 'About Us' },
   { to: '/settings', icon: Settings, label: 'Settings' },
 ];
