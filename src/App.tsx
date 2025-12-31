@@ -17,6 +17,9 @@ import Learn from "./pages/Learn";
 import GameIUPAC from "./pages/GameIUPAC";
 import GameSigmaPi from "./pages/GameSigmaPi";
 import GameHybridisation from "./pages/GameHybridisation";
+import Achievements from "./pages/Achievements";
+import SignUp from "./pages/SignUp";
+import Pricing from "./pages/Pricing";
 export type SigmaPiQuestion = {
   id: number;
   structure: string;
@@ -76,7 +79,9 @@ const AppRoutes = () => {
       <Route path="/game/iupac" element={<GameIUPAC />} />
       <Route path="/game/sigma-pi" element={<GameSigmaPi />} />
       <Route path="/game/hybridisation" element={<GameHybridisation />} />
-
+      <Route path="/achievements" element={<Achievements />} />
+      <Route path="/signup" element={<SignUp />} />
+      <Route path="/pricing" element={<Pricing />} />
     </Routes>
   );
 };
