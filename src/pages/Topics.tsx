@@ -43,7 +43,7 @@ const Topics = () => {
       <div className="p-4 pb-8">
         {/* Tutor Message */}
         {selectedTutor && (
-          <div className="bg-card rounded-2xl p-4 mb-6 shadow-card flex items-start gap-3">
+          <div className="bg-card/80 backdrop-blur-md rounded-2xl p-4 mb-6 shadow-card flex items-start gap-3">
             <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center text-2xl">
               {selectedTutor.emoji}
             </div>

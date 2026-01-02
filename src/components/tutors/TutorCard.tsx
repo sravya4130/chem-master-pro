@@ -26,11 +26,11 @@ export const TutorCard = ({ tutor, isSelected, onClick, isSpeaking = false }: Tu
     <button
       onClick={onClick}
       className={cn(
-        'relative p-6 rounded-2xl border-2 transition-all duration-300 w-full text-left',
+        'relative p-6 rounded-2xl border-2 transition-all duration-300 w-full text-left backdrop-blur-md',
         'hover:scale-105 hover:shadow-card-hover',
         isSelected 
-          ? 'border-primary bg-primary/5 shadow-game' 
-          : 'border-border bg-card hover:border-primary/50'
+          ? 'border-primary bg-primary/10 shadow-game' 
+          : 'border-border bg-card/80 hover:border-primary/50'
       )}
     >
       {isSelected && (

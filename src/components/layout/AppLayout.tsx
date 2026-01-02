@@ -2,22 +2,27 @@ import { ReactNode } from 'react';
 import { AppSidebar } from './AppSidebar';
 import { useApp } from '@/contexts/AppContext';
 import { Flame, Trophy } from 'lucide-react';
+import { SceneBackground } from '@/components/3d/SceneBackground';
 
 interface AppLayoutProps {
   children: ReactNode;
   showHeader?: boolean;
   title?: string;
+  hideBackground?: boolean;
 }
 
-export const AppLayout = ({ children, showHeader = true, title }: AppLayoutProps) => {
+export const AppLayout = ({ children, showHeader = true, title, hideBackground = false }: AppLayoutProps) => {
   const { userProgress } = useApp();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
+      {/* 3D Background for all pages */}
+      {!hideBackground && <SceneBackground />}
+      
       <AppSidebar />
       
       {showHeader && (
-        <header className="fixed top-0 left-0 right-0 h-14 bg-card/80 backdrop-blur-lg border-b border-border z-40 flex items-center justify-between px-16">
+        <header className="fixed top-0 left-0 right-0 h-14 bg-card/60 backdrop-blur-xl border-b border-border/50 z-40 flex items-center justify-between px-16">
           <h2 className="font-bold text-lg">{title || 'ChemLearn'}</h2>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1 bg-secondary px-3 py-1.5 rounded-full">
@@ -32,7 +37,7 @@ export const AppLayout = ({ children, showHeader = true, title }: AppLayoutProps
         </header>
       )}
       
-      <main className={showHeader ? 'pt-14' : ''}>
+      <main className={`relative z-10 ${showHeader ? 'pt-14' : ''}`}>
         {children}
       </main>
     </div>

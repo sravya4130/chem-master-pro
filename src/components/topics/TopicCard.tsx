@@ -40,11 +40,11 @@ export const TopicCard = ({
       onClick={onClick}
       disabled={isLocked}
       className={cn(
-        'relative p-6 rounded-2xl border-2 transition-all duration-300 w-full text-left',
+        'relative p-6 rounded-2xl border-2 transition-all duration-300 w-full text-left backdrop-blur-md',
         'hover:shadow-card-hover',
         isLocked 
-          ? 'opacity-50 cursor-not-allowed bg-muted border-border' 
-          : cn('bg-card', borderColorMap[color]),
+          ? 'opacity-50 cursor-not-allowed bg-muted/80 border-border' 
+          : cn('bg-card/80', borderColorMap[color]),
         !isLocked && 'hover:scale-[1.02]'
       )}
     >

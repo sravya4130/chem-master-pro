@@ -369,8 +369,18 @@ const Scene = () => {
 
 export const ChemistryScene = () => {
   return (
-    <div className="absolute inset-0 -z-10">
-      <Canvas camera={{ position: [0, 0, 8], fov: 60 }}>
+    <div className="absolute inset-0 z-0">
+      <Canvas 
+        camera={{ position: [0, 0, 8], fov: 60 }}
+        gl={{ 
+          antialias: true, 
+          powerPreference: 'high-performance',
+          failIfMajorPerformanceCaveat: false
+        }}
+        onCreated={({ gl }) => {
+          gl.setClearColor(0x0d1117, 1);
+        }}
+      >
         <Suspense fallback={null}>
           <Scene />
         </Suspense>

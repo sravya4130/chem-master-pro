@@ -60,7 +60,7 @@ const Tutors = () => {
       <div className="p-4 pb-8">
         {/* Current Tutor */}
         {selectedTutor && (
-          <div className="bg-primary/10 rounded-2xl p-4 mb-6 border-2 border-primary/30">
+          <div className="bg-primary/10 backdrop-blur-md rounded-2xl p-4 mb-6 border-2 border-primary/30">
             <p className="text-sm text-muted-foreground mb-2">Currently Learning With</p>
             <div className="flex items-center gap-4">
               <TutorAvatar3D 

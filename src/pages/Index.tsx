@@ -3,7 +3,7 @@ import { AppLayout } from '@/components/layout/AppLayout';
 import { useApp } from '@/contexts/AppContext';
 import { Button } from '@/components/ui/button';
 import { FlaskConical, Trophy, Flame, ChevronRight, Sparkles } from 'lucide-react';
-import { FloatingMolecules } from '@/components/3d/FloatingMolecules';
+import { ChemistryScene } from '@/components/3d/ChemistryScene';
 import { ProgressDashboard } from '@/components/dashboard/ProgressDashboard';
 import { useSoundEffects } from '@/hooks/useSoundEffects';
 
@@ -19,10 +19,10 @@ const Index = () => {
   };
 
   return (
-    <AppLayout showHeader={false}>
+    <AppLayout showHeader={false} hideBackground={true}>
       <div className="min-h-screen flex flex-col relative overflow-hidden">
-        {/* 3D Background */}
-        <FloatingMolecules />
+        {/* 3D Chemistry Background */}
+        <ChemistryScene />
         
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-primary/20 via-transparent to-background pointer-events-none" />
