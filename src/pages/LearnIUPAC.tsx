@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { useApp } from '@/contexts/AppContext';
 import { Button } from '@/components/ui/button';
 import { iupacLessons } from '@/data/iupacData';
 import { ArrowLeft, ArrowRight, BookOpen, Gamepad2 } from 'lucide-react';
+import { useTutorSpeech } from '@/hooks/useTutorSpeech';
+import { SpeechControls } from '@/components/speech/SpeechControls';
 
 const LearnIUPAC = () => {
   const navigate = useNavigate();
@@ -12,7 +14,54 @@ const LearnIUPAC = () => {
   const [currentLesson, setCurrentLesson] = useState(0);
   const [mode, setMode] = useState<'intro' | 'learn' | 'practice'>('intro');
 
+  const {
+    speak,
+    pause,
+    resume,
+    stop,
+    isSpeaking,
+    isPaused,
+    isSupported,
+    speedMultiplier,
+    increaseSpeed,
+    decreaseSpeed,
+    progress,
+  } = useTutorSpeech(selectedTutor);
+
   const lesson = iupacLessons[currentLesson];
+
+  // Stop speech when changing lessons or leaving
+  useEffect(() => {
+    return () => {
+      stop();
+    };
+  }, [stop]);
+
+  // Stop speech when lesson changes
+  useEffect(() => {
+    stop();
+  }, [currentLesson, stop]);
+
+  // Generate speech text for the current lesson
+  const getLessonSpeechText = () => {
+    if (!lesson) return '';
+    
+    // Clean up the content for speech
+    const cleanContent = lesson.content
+      .replace(/\*\*/g, '') // Remove bold markers
+      .replace(/- /g, '') // Remove list markers
+      .replace(/\n+/g, '. ') // Replace newlines with pauses
+      .trim();
+    
+    const exampleText = `Here's an example: ${lesson.example.structure} is named ${lesson.example.name}. ${lesson.example.explanation}`;
+    
+    return `${lesson.title}. ${cleanContent}. ${exampleText}`;
+  };
+
+  const handlePlaySpeech = () => {
+    const text = getLessonSpeechText();
+    speak(text);
+  };
 
   if (mode === 'intro') {
     return (
@@ -89,7 +138,7 @@ const LearnIUPAC = () => {
 
   return (
     <AppLayout title={`Lesson ${currentLesson + 1}`}>
-      <div className="p-4 pb-24">
+      <div className="p-4 pb-32">
         {/* Progress */}
         <div className="flex gap-1 mb-6">
           {iupacLessons.map((_, i) => (
@@ -102,15 +151,42 @@ const LearnIUPAC = () => {
           ))}
         </div>
 
-        {/* Tutor */}
+        {/* Tutor with Speech Controls */}
         {selectedTutor && (
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center text-2xl">
-              {selectedTutor.emoji}
+          <div className="mb-6">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center text-2xl">
+                {selectedTutor.emoji}
+              </div>
+              <div className="flex-1 bg-card rounded-xl p-3 shadow-card">
+                <p className="text-sm">
+                  {isSpeaking && !isPaused ? (
+                    <span className="flex items-center gap-2">
+                      <span className="animate-pulse">🔊</span> {selectedTutor.name} is teaching...
+                    </span>
+                  ) : (
+                    <span>{selectedTutor.name} will read the lesson for you</span>
+                  )}
+                </p>
+              </div>
             </div>
-            <div className="flex-1 bg-card rounded-xl p-3 shadow-card">
-              <p className="text-sm">{selectedTutor.name} is teaching...</p>
-            </div>
+            
+            {/* Speech Controls */}
+            {isSupported && (
+              <SpeechControls
+                isSpeaking={isSpeaking}
+                isPaused={isPaused}
+                speedMultiplier={speedMultiplier}
+                progress={progress}
+                onPlay={handlePlaySpeech}
+                onPause={pause}
+                onResume={resume}
+                onStop={stop}
+                onIncreaseSpeed={increaseSpeed}
+                onDecreaseSpeed={decreaseSpeed}
+                className="ml-15"
+              />
+            )}
           </div>
         )}
 
@@ -152,6 +228,7 @@ const LearnIUPAC = () => {
           <Button
             variant="outline"
             onClick={() => {
+              stop();
               if (currentLesson > 0) {
                 setCurrentLesson(currentLesson - 1);
               } else {
@@ -165,6 +242,7 @@ const LearnIUPAC = () => {
           </Button>
           <Button
             onClick={() => {
+              stop();
               if (currentLesson < iupacLessons.length - 1) {
                 setCurrentLesson(currentLesson + 1);
               } else {
