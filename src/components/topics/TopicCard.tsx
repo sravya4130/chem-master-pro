@@ -2,27 +2,37 @@ import { cn } from '@/lib/utils';
 import { Lock, CheckCircle, Play } from 'lucide-react';
 import { ReactNode } from 'react';
 
-interface TopicCardProps {
+export interface TopicCardProps {
   title: string;
   description: string;
   icon: ReactNode;
-  color: 'blue' | 'green' | 'pink';
+  color: 'blue' | 'green' | 'pink' | 'purple' | 'orange' | 'cyan' | 'yellow' | 'red';
   progress: number;
   isLocked?: boolean;
   isCompleted?: boolean;
   onClick: () => void;
 }
 
-const colorMap = {
+const colorMap: Record<string, string> = {
   blue: 'bg-topic-blue',
   green: 'bg-topic-green',
   pink: 'bg-topic-pink',
+  purple: 'bg-purple-500',
+  orange: 'bg-orange-500',
+  cyan: 'bg-cyan-500',
+  yellow: 'bg-yellow-500',
+  red: 'bg-red-500',
 };
 
-const borderColorMap = {
+const borderColorMap: Record<string, string> = {
   blue: 'border-topic-blue/30 hover:border-topic-blue',
   green: 'border-topic-green/30 hover:border-topic-green',
   pink: 'border-topic-pink/30 hover:border-topic-pink',
+  purple: 'border-purple-500/30 hover:border-purple-500',
+  orange: 'border-orange-500/30 hover:border-orange-500',
+  cyan: 'border-cyan-500/30 hover:border-cyan-500',
+  yellow: 'border-yellow-500/30 hover:border-yellow-500',
+  red: 'border-red-500/30 hover:border-red-500',
 };
 
 export const TopicCard = ({
