@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -68,6 +69,11 @@
     --topic-blue: 210 85% 55%;
     --topic-green: 150 65% 45%;
     --topic-pink: 330 75% 60%;
+    --topic-purple: 270 70% 60%;
+    --topic-orange: 25 95% 55%;
+    --topic-cyan: 185 75% 50%;
+    --topic-yellow: 45 95% 55%;
+    --topic-red: 0 75% 55%;
 
     /* Tutor colors */
     --tutor-alex: 200 80% 55%;

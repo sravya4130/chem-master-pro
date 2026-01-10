@@ -18,6 +18,7 @@ export default {
     extend: {
       fontFamily: {
         nunito: ["Nunito", "sans-serif"],
+        handwritten: ["Caveat", "Comic Sans MS", "cursive"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -80,6 +81,11 @@ export default {
           blue: "hsl(var(--topic-blue))",
           green: "hsl(var(--topic-green))",
           pink: "hsl(var(--topic-pink))",
+          purple: "hsl(var(--topic-purple))",
+          orange: "hsl(var(--topic-orange))",
+          cyan: "hsl(var(--topic-cyan))",
+          yellow: "hsl(var(--topic-yellow))",
+          red: "hsl(var(--topic-red))",
         },
         tutor: {
           alex: "hsl(var(--tutor-alex))",
