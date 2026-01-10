@@ -3,4 +3,3 @@ import App from "./App.tsx";
 import "./index.css";
 
 createRoot(document.getElementById("root")!).render(<App />);
-Src/main.tsx step 1
