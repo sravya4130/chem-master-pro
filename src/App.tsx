@@ -20,6 +20,13 @@ import GameHybridisation from "./pages/GameHybridisation";
 import Achievements from "./pages/Achievements";
 import SignUp from "./pages/SignUp";
 import Pricing from "./pages/Pricing";
+import TopicsMaths from "./pages/TopicsMaths";
+import TopicsPhysics from "./pages/TopicsPhysics";
+import LearnMaths from "./pages/LearnMaths";
+import LearnPhysics from "./pages/LearnPhysics";
+import GameMaths from "./pages/GameMaths";
+import GamePhysics from "./pages/GamePhysics";
+
 export type SigmaPiQuestion = {
   id: number;
   structure: string;
@@ -82,6 +89,12 @@ const AppRoutes = () => {
       <Route path="/achievements" element={<Achievements />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/pricing" element={<Pricing />} />
+      <Route path="/topics/maths" element={<TopicsMaths />} />
+      <Route path="/topics/physics" element={<TopicsPhysics />} />
+      <Route path="/learn/maths/:topicId" element={<LearnMaths />} />
+      <Route path="/learn/physics/:topicId" element={<LearnPhysics />} />
+      <Route path="/game/maths/:topicId" element={<GameMaths />} />
+      <Route path="/game/physics/:topicId" element={<GamePhysics />} />
     </Routes>
   );
 };
