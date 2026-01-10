@@ -13,6 +13,16 @@ const SelectSubject = () => {
     navigate('/select-tutor');
   };
 
+  const handleSelectMaths = () => {
+    setSelectedSubject('maths');
+    navigate('/select-tutor');
+  };
+
+  const handleSelectPhysics = () => {
+    setSelectedSubject('physics');
+    navigate('/select-tutor');
+  };
+
   return (
     <AppLayout showHeader={false}>
       <div className="min-h-screen bg-background">
@@ -54,40 +64,48 @@ const SelectSubject = () => {
             </div>
           </button>
 
-          {/* Coming Soon Subjects */}
-          <div className="opacity-50">
-            <div className="w-full bg-muted rounded-2xl p-6 border-2 border-border">
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-xl bg-muted-foreground/20 flex items-center justify-center">
-                  <span className="text-3xl">📐</span>
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-bold text-xl">Mathematics</h3>
-                    <span className="text-xs bg-accent px-2 py-0.5 rounded-full text-accent-foreground">Coming Soon</span>
-                  </div>
-                  <p className="text-muted-foreground">Calculus, Algebra & Geometry</p>
+          {/* Mathematics - Active */}
+          <button
+            onClick={handleSelectMaths}
+            className="w-full bg-card rounded-2xl p-6 shadow-card hover:shadow-card-hover transition-all hover:scale-[1.02] border-2 border-transparent hover:border-purple-500 text-left"
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 rounded-xl bg-purple-500 flex items-center justify-center">
+                <span className="text-3xl">📐</span>
+              </div>
+              <div className="flex-1">
+                <h3 className="font-bold text-xl">Mathematics</h3>
+                <p className="text-muted-foreground">Sets, Relations & Trigonometry</p>
+                <div className="flex gap-2 mt-2">
+                  <span className="text-xs bg-purple-500/20 text-purple-400 px-2 py-1 rounded-full">Sets</span>
+                  <span className="text-xs bg-orange-500/20 text-orange-400 px-2 py-1 rounded-full">Relations</span>
+                  <span className="text-xs bg-cyan-500/20 text-cyan-400 px-2 py-1 rounded-full">Trigonometry</span>
                 </div>
               </div>
+              <ChevronRight className="h-6 w-6 text-purple-500" />
             </div>
-          </div>
+          </button>
 
-          <div className="opacity-50">
-            <div className="w-full bg-muted rounded-2xl p-6 border-2 border-border">
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-xl bg-muted-foreground/20 flex items-center justify-center">
-                  <span className="text-3xl">⚛️</span>
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-bold text-xl">Physics</h3>
-                    <span className="text-xs bg-accent px-2 py-0.5 rounded-full text-accent-foreground">Coming Soon</span>
-                  </div>
-                  <p className="text-muted-foreground">Mechanics, Waves & Modern Physics</p>
+          {/* Physics - Active */}
+          <button
+            onClick={handleSelectPhysics}
+            className="w-full bg-card rounded-2xl p-6 shadow-card hover:shadow-card-hover transition-all hover:scale-[1.02] border-2 border-transparent hover:border-orange-500 text-left"
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 rounded-xl bg-orange-500 flex items-center justify-center">
+                <span className="text-3xl">⚛️</span>
+              </div>
+              <div className="flex-1">
+                <h3 className="font-bold text-xl">Physics</h3>
+                <p className="text-muted-foreground">Units, Dimensions & Motion</p>
+                <div className="flex gap-2 mt-2">
+                  <span className="text-xs bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded-full">Dimensions</span>
+                  <span className="text-xs bg-red-500/20 text-red-400 px-2 py-1 rounded-full">Motion</span>
                 </div>
               </div>
+              <ChevronRight className="h-6 w-6 text-orange-500" />
             </div>
-          </div>
+          </button>
         </div>
       </div>
     </AppLayout>
