@@ -21,9 +21,6 @@ import { useState } from 'react';
 
 const navItems = [
   { to: '/', icon: Home, label: 'Home' },
-  { to: '/topics', icon: FlaskConical, label: 'Chemistry' },
-  { to: '/topics/maths', icon: GraduationCap, label: 'Mathematics' },
-  { to: '/topics/physics', icon: GraduationCap, label: 'Physics' },
   { to: '/tutors', icon: GraduationCap, label: 'Tutors' },
   { to: '/achievements', icon: Award, label: 'Achievements' },
   { to: '/friends', icon: Users, label: 'Friends' },
