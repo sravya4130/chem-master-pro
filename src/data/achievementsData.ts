@@ -16,7 +16,7 @@ export const achievements: Achievement[] = [
   // Streak Achievements
   {
     id: 'first-steps',
-    name: 'First Steps',
+    name: '**First Steps**',
     description: 'Complete your first question',
     icon: '👶',
     category: 'general',
@@ -26,7 +26,7 @@ export const achievements: Achievement[] = [
   },
   {
     id: 'getting-started',
-    name: 'Getting Started',
+    name: '**Getting Started**',
     description: 'Answer 10 questions correctly',
     icon: '🎯',
     category: 'general',
@@ -36,7 +36,7 @@ export const achievements: Achievement[] = [
   },
   {
     id: 'chemistry-novice',
-    name: 'Chemistry Novice',
+    name: '**Chemistry Novice**',
     description: 'Answer 50 questions correctly',
     icon: '🧪',
     category: 'general',
@@ -46,7 +46,7 @@ export const achievements: Achievement[] = [
   },
   {
     id: 'chemistry-expert',
-    name: 'Chemistry Expert',
+    name: '**Chemistry Expert**',
     description: 'Answer 100 questions correctly',
     icon: '🔬',
     category: 'general',
@@ -54,11 +54,11 @@ export const achievements: Achievement[] = [
     xpReward: 100,
     rarity: 'epic',
   },
-  
+
   // Streak Achievements
   {
     id: 'streak-starter',
-    name: 'Streak Starter',
+    name: '**Streak Starter**',
     description: 'Achieve a 3-day streak',
     icon: '🔥',
     category: 'streak',
@@ -68,7 +68,7 @@ export const achievements: Achievement[] = [
   },
   {
     id: 'streak-master',
-    name: 'Streak Master',
+    name: '**Streak Master**',
     description: 'Achieve a 7-day streak',
     icon: '💪',
     category: 'streak',
@@ -78,7 +78,7 @@ export const achievements: Achievement[] = [
   },
   {
     id: 'unstoppable',
-    name: 'Unstoppable',
+    name: '**Unstoppable**',
     description: 'Achieve a 30-day streak',
     icon: '⚡',
     category: 'streak',
@@ -86,11 +86,11 @@ export const achievements: Achievement[] = [
     xpReward: 200,
     rarity: 'legendary',
   },
-  
+
   // XP Achievements
   {
     id: 'xp-collector',
-    name: 'XP Collector',
+    name: '**XP Collector**',
     description: 'Earn 100 XP total',
     icon: '⭐',
     category: 'xp',
@@ -100,7 +100,7 @@ export const achievements: Achievement[] = [
   },
   {
     id: 'xp-hunter',
-    name: 'XP Hunter',
+    name: '**XP Hunter**',
     description: 'Earn 500 XP total',
     icon: '💎',
     category: 'xp',
@@ -110,7 +110,7 @@ export const achievements: Achievement[] = [
   },
   {
     id: 'xp-champion',
-    name: 'XP Champion',
+    name: '**XP Champion**',
     description: 'Earn 1000 XP total',
     icon: '👑',
     category: 'xp',
@@ -120,7 +120,7 @@ export const achievements: Achievement[] = [
   },
   {
     id: 'xp-legend',
-    name: 'XP Legend',
+    name: '**XP Legend**',
     description: 'Earn 5000 XP total',
     icon: '🏆',
     category: 'xp',
@@ -128,11 +128,11 @@ export const achievements: Achievement[] = [
     xpReward: 250,
     rarity: 'legendary',
   },
-  
+
   // Topic Achievements
   {
     id: 'iupac-explorer',
-    name: 'IUPAC Explorer',
+    name: '**IUPAC Explorer**',
     description: 'Complete the IUPAC naming module',
     icon: '📝',
     category: 'topics',
@@ -142,7 +142,7 @@ export const achievements: Achievement[] = [
   },
   {
     id: 'hybridisation-hero',
-    name: 'Hybridisation Hero',
+    name: '**Hybridisation Hero**',
     description: 'Master hybridisation concepts',
     icon: '🎭',
     category: 'topics',
@@ -152,7 +152,7 @@ export const achievements: Achievement[] = [
   },
   {
     id: 'bond-breaker',
-    name: 'Bond Breaker',
+    name: '**Bond Breaker**',
     description: 'Complete sigma & pi bonds module',
     icon: '⚛️',
     category: 'topics',
@@ -160,11 +160,11 @@ export const achievements: Achievement[] = [
     xpReward: 100,
     rarity: 'epic',
   },
-  
+
   // Level Achievements
   {
     id: 'level-5',
-    name: 'Rising Star',
+    name: '**Rising Star**',
     description: 'Reach Level 5',
     icon: '🌟',
     category: 'general',
@@ -174,7 +174,7 @@ export const achievements: Achievement[] = [
   },
   {
     id: 'level-10',
-    name: 'Chemistry Apprentice',
+    name: '**Chemistry Apprentice**',
     description: 'Reach Level 10',
     icon: '🎓',
     category: 'general',
@@ -184,7 +184,7 @@ export const achievements: Achievement[] = [
   },
   {
     id: 'level-25',
-    name: 'Chemistry Scientist',
+    name: '**Chemistry Scientist**',
     description: 'Reach Level 25',
     icon: '🧬',
     category: 'general',
@@ -194,7 +194,7 @@ export const achievements: Achievement[] = [
   },
   {
     id: 'level-50',
-    name: 'Chemistry Master',
+    name: '**Chemistry Master**',
     description: 'Reach Level 50',
     icon: '🏅',
     category: 'general',
@@ -202,11 +202,11 @@ export const achievements: Achievement[] = [
     xpReward: 500,
     rarity: 'legendary',
   },
-  
+
   // Accuracy Achievements
   {
     id: 'perfect-10',
-    name: 'Perfect 10',
+    name: '**Perfect 10**',
     description: 'Get 10 correct answers in a row',
     icon: '💯',
     category: 'accuracy',
@@ -216,7 +216,7 @@ export const achievements: Achievement[] = [
   },
   {
     id: 'flawless',
-    name: 'Flawless',
+    name: '**Flawless**',
     description: 'Complete a game with 100% accuracy',
     icon: '✨',
     category: 'accuracy',
