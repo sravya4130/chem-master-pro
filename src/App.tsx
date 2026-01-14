@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AppProvider } from "./contexts/AppContext";
+import { MistakeProvider } from "./contexts/MistakeContext";
 import Index from "./pages/Index";
 import SelectSubject from "./pages/SelectSubject";
 import SelectTutor from "./pages/SelectTutor";
@@ -26,6 +27,8 @@ import LearnMaths from "./pages/LearnMaths";
 import LearnPhysics from "./pages/LearnPhysics";
 import GameMaths from "./pages/GameMaths";
 import GamePhysics from "./pages/GamePhysics";
+import Subjects from "./pages/Subjects";
+import Mistakes from "./pages/Mistakes";
 
 export type SigmaPiQuestion = {
   id: number;
@@ -71,15 +74,15 @@ const AppRoutes = () => {
 
   return (
     <Routes>
-      {/* Force Home to always load fresh */}
       <Route path="/" element={<Index key={location.key} />} />
-
       <Route path="/select-subject" element={<SelectSubject />} />
       <Route path="/select-tutor" element={<SelectTutor />} />
+      <Route path="/subjects" element={<Subjects />} />
       <Route path="/topics" element={<Topics />} />
       <Route path="/tutors" element={<Tutors />} />
       <Route path="/friends" element={<Friends />} />
       <Route path="/messages" element={<Messages />} />
+      <Route path="/mistakes" element={<Mistakes />} />
       <Route path="/settings" element={<Settings />} />
       <Route path="/about" element={<About />} />
       <Route path="/learn/:topicId" element={<Learn />} />
@@ -102,13 +105,15 @@ const AppRoutes = () => {
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AppProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <AppRoutes />
-        </BrowserRouter>
-      </TooltipProvider>
+      <MistakeProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <AppRoutes />
+          </BrowserRouter>
+        </TooltipProvider>
+      </MistakeProvider>
     </AppProvider>
   </QueryClientProvider>
 );
