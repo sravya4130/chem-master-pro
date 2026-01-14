@@ -7,6 +7,9 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight, Volume2 } from 'lucide-react';
 import { useSpeech } from '@/hooks/useSpeech';
 
+// Helper for cn
+const cn = (...classes: (string | boolean | undefined)[]) => classes.filter(Boolean).join(' ');
+
 const tutorMessages: Record<string, string> = {
   alex: "Welcome! I am Alex. I'll make chemistry fun and easy for you. Let's explore molecules together!",
   david: "Hey there! I'm David. Together we'll conquer every chemistry concept. Ready to learn?",
@@ -18,14 +21,26 @@ const tutorMessages: Record<string, string> = {
 
 const SelectTutor = () => {
   const navigate = useNavigate();
-  const { tutors, selectedTutor, setSelectedTutor } = useApp();
+  const { tutors, selectedTutor, setSelectedTutor, selectedSubject } = useApp();
   const [showMessage, setShowMessage] = useState(false);
   const { speak, stop, isSpeaking, isSupported } = useSpeech();
+
+  const getTopicsPath = () => {
+    switch (selectedSubject) {
+      case 'physics':
+        return '/topics/physics';
+      case 'mathematics':
+        return '/topics/maths';
+      case 'chemistry':
+      default:
+        return '/topics';
+    }
+  };
 
   const handleContinue = () => {
     if (selectedTutor) {
       stop();
-      navigate('/topics');
+      navigate(getTopicsPath());
     }
   };
 
@@ -139,8 +154,5 @@ const SelectTutor = () => {
     </AppLayout>
   );
 };
-
-// Helper for cn
-const cn = (...classes: (string | boolean | undefined)[]) => classes.filter(Boolean).join(' ');
 
 export default SelectTutor;

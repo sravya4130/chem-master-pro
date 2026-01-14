@@ -56,10 +56,10 @@ const Subjects = () => {
   const { setSelectedSubject, userProgress } = useApp();
   const { playClick } = useSoundEffects();
 
-  const handleSelectSubject = (subject: string, path: string) => {
+  const handleSelectSubject = (subject: string) => {
     playClick();
     setSelectedSubject(subject);
-    navigate(path);
+    navigate('/select-tutor');
   };
 
   const subjects = [
@@ -71,7 +71,6 @@ const Subjects = () => {
       color: 'bg-emerald-500',
       topicsCount: 3,
       completedCount: userProgress.completedTopics.filter(t => ['iupac', 'hybridisation', 'sigma-pi'].includes(t)).length,
-      path: '/topics',
     },
     {
       id: 'physics',
@@ -81,7 +80,6 @@ const Subjects = () => {
       color: 'bg-yellow-500',
       topicsCount: 2,
       completedCount: userProgress.completedTopics.filter(t => ['units-dimensions', 'motion-plane'].includes(t)).length,
-      path: '/topics/physics',
     },
     {
       id: 'mathematics',
@@ -91,7 +89,6 @@ const Subjects = () => {
       color: 'bg-cyan-500',
       topicsCount: 3,
       completedCount: userProgress.completedTopics.filter(t => ['sets', 'relations', 'trigonometry'].includes(t)).length,
-      path: '/topics/maths',
     },
   ];
 
@@ -113,7 +110,7 @@ const Subjects = () => {
               color={subject.color}
               topicsCount={subject.topicsCount}
               completedCount={subject.completedCount}
-              onClick={() => handleSelectSubject(subject.id, subject.path)}
+              onClick={() => handleSelectSubject(subject.id)}
             />
           ))}
         </div>
