@@ -33,7 +33,8 @@ const LearnDimensions = () => {
   useEffect(() => () => stop(), [stop]);
   useEffect(() => stop(), [currentLesson, stop]);
 
-  const cleanLines = lesson.content
+  // 🔹 CLEAN + STRUCTURE CONTENT
+  const rows = lesson.content
     .split('\n')
     .map(line =>
       line
@@ -42,7 +43,17 @@ const LearnDimensions = () => {
         .replace(/^- /g, '')
         .trim()
     )
-    .filter(Boolean);
+    .filter(Boolean)
+    .map(line => {
+      // Expected format: Quantity : Symbol = Formula
+      const [quantityPart, rest] = line.split(':');
+      const [symbol, formula] = rest ? rest.split('=') : [];
+      return {
+        quantity: quantityPart?.trim() || '-',
+        symbol: symbol?.trim() || '-',
+        formula: formula?.trim() || '-',
+      };
+    });
 
   if (mode === 'intro') {
     return (
@@ -50,7 +61,7 @@ const LearnDimensions = () => {
         <div className="p-4 pb-8 space-y-4">
           <div className="bg-yellow-500 rounded-2xl p-6 text-white">
             <h2 className="text-2xl font-bold">Units & Dimensions</h2>
-            <p className="opacity-80">Learn fundamentals step by step</p>
+            <p className="opacity-80">Master dimensional analysis</p>
           </div>
 
           <Button
@@ -60,7 +71,7 @@ const LearnDimensions = () => {
             <BookOpen className="h-8 w-8" />
             <div className="text-left">
               <p className="font-bold text-lg">Learn First</p>
-              <p className="text-sm opacity-80">Start learning</p>
+              <p className="text-sm opacity-80">Study step by step</p>
             </div>
           </Button>
 
@@ -72,7 +83,7 @@ const LearnDimensions = () => {
             <Gamepad2 className="h-8 w-8" />
             <div className="text-left">
               <p className="font-bold text-lg">Jump to Game</p>
-              <p className="text-sm text-muted-foreground">Practice</p>
+              <p className="text-sm text-muted-foreground">Test knowledge</p>
             </div>
           </Button>
         </div>
@@ -96,23 +107,20 @@ const LearnDimensions = () => {
           ))}
         </div>
 
-        {/* Tutor */}
-        {selectedTutor && (
-          <div className="bg-card rounded-xl p-4 flex gap-3">
-            <div className="text-2xl">{selectedTutor.emoji}</div>
-            <p className="text-sm">
-              {isSpeaking ? 'Teaching…' : 'Tap play to listen'}
-            </p>
-          </div>
-        )}
-
-        {isSupported && (
+        {/* Tutor Speech */}
+        {selectedTutor && isSupported && (
           <SpeechControls
             isSpeaking={isSpeaking}
             isPaused={isPaused}
             speedMultiplier={speedMultiplier}
             progress={progress}
-            onPlay={() => speak(cleanLines.join('. '))}
+            onPlay={() =>
+              speak(
+                rows
+                  .map(r => `${r.quantity}, symbol ${r.symbol}, formula ${r.formula}`)
+                  .join('. ')
+              )
+            }
             onPause={pause}
             onResume={resume}
             onStop={stop}
@@ -121,31 +129,32 @@ const LearnDimensions = () => {
           />
         )}
 
-        {/* 🔥 FIXED CONTENT GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {cleanLines.map((line, i) => (
-            <div
-              key={i}
-              className="bg-card rounded-xl p-4 shadow-card"
-            >
-              <p className="text-sm text-foreground">{line}</p>
+        {/* ✅ FIXED 3-COLUMN TABLE */}
+        <div className="overflow-x-auto">
+          <div className="grid grid-cols-3 gap-2 text-sm">
+
+            <div className="font-bold bg-muted p-3 rounded-tl-xl">Quantity</div>
+            <div className="font-bold bg-muted p-3 text-center">Symbol</div>
+            <div className="font-bold bg-muted p-3 rounded-tr-xl text-center">
+              Dimensional Formula
             </div>
-          ))}
+
+            {rows.map((row, i) => (
+              <>
+                <div key={`q-${i}`} className="bg-card p-3 border">
+                  {row.quantity}
+                </div>
+                <div key={`s-${i}`} className="bg-card p-3 border text-center">
+                  {row.symbol}
+                </div>
+                <div key={`f-${i}`} className="bg-card p-3 border font-mono text-center">
+                  {row.formula}
+                </div>
+              </>
+            ))}
+          </div>
         </div>
 
-        {/* Example */}
-        <div className="bg-secondary rounded-2xl p-6">
-          <h3 className="font-bold mb-3">Example</h3>
-          <p className="font-mono text-center mb-2">
-            {lesson.example.problem}
-          </p>
-          <p className="text-center font-bold text-yellow-500">
-            {lesson.example.solution}
-          </p>
-          <p className="text-sm text-muted-foreground text-center mt-2">
-            {lesson.example.explanation}
-          </p>
-        </div>
       </div>
 
       {/* Navigation */}
