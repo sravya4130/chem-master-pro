@@ -97,7 +97,7 @@ const Index = () => {
             <Sparkles className="absolute -top-2 -right-2 h-6 w-6 text-game-xp animate-pulse" />
           </div>
           <h1 className="text-4xl sm:text-5xl font-black text-center mb-2 bg-gradient-to-r from-primary via-topic-blue to-topic-purple bg-clip-text text-transparent drop-shadow-lg">
-            LearnHub
+            CHEMLEARN
           </h1>
           <p className="text-base text-center text-muted-foreground max-w-sm backdrop-blur-sm bg-background/30 rounded-full px-4 py-1.5">
             Master JEE with interactive games!
