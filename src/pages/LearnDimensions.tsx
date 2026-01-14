@@ -74,29 +74,30 @@ const LearnDimensions = () => {
           </div>
         )}
         <div className="bg-card rounded-2xl p-6 shadow-card mb-6">
-  <h2 className="text-xl font-bold mb-6">{lesson.title}</h2>
-
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-    {lesson.content
-      .split('\n')
-      .filter(line => line.trim() !== '')
-      .map((line, i) => (
-        <div
-          key={i}
-          className="bg-secondary rounded-xl p-4 shadow-sm"
-        >
-          {line.startsWith('**') && line.endsWith('**') ? (
-            <p className="font-bold text-primary">
-              {line.replace(/\*\*/g, '')}
-            </p>
-          ) : line.startsWith('- ') ? (
-            <p className="text-sm">• {line.substring(2)}</p>
-          ) : (
-            <p className="text-sm text-muted-foreground">
-              {line.replace(/\|/g, '')}
-            </p>
-          )}
+          <h2 className="text-xl font-bold mb-4">{lesson.title}</h2>
+          <div className="prose prose-sm text-foreground">{lesson.content.split('\n').map((line, i) => line.startsWith('**') && line.endsWith('**') ? <p key={i} className="font-bold mt-3">{line.replace(/\*\*/g, '')}</p> : line.startsWith('- ') ? <p key={i} className="ml-4">• {line.substring(2)}</p> : line.startsWith('|') ? <p key={i} className="font-mono text-xs bg-muted p-1 rounded">{line}</p> : <p key={i} className="text-muted-foreground">{line}</p>)}</div>
         </div>
-      ))}
-  </div>
-</div>
+        {lesson.repeatAfterMe && (
+          <div className="bg-yellow-500/20 border border-yellow-500/50 rounded-2xl p-4 mb-6">
+            <div className="flex items-center gap-2 mb-2"><Volume2 className="h-5 w-5 text-yellow-500" /><h3 className="font-bold text-yellow-500">Repeat After Me:</h3></div>
+            <p className="text-sm italic">"{lesson.repeatAfterMe}"</p>
+          </div>
+        )}
+        <div className="bg-secondary rounded-2xl p-6">
+          <h3 className="font-bold mb-3">📝 Example</h3>
+          <div className="bg-card rounded-xl p-4 mb-3"><p className="font-mono text-lg text-center">{lesson.example.problem}</p></div>
+          <p className="text-center"><span className="text-muted-foreground">Solution: </span><span className="font-bold text-yellow-500">{lesson.example.solution}</span></p>
+          <p className="text-sm text-muted-foreground mt-2 text-center">{lesson.example.explanation}</p>
+        </div>
+      </div>
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-background/80 backdrop-blur-lg border-t border-border">
+        <div className="flex gap-3">
+          <Button variant="outline" onClick={() => { stop(); currentLesson > 0 ? setCurrentLesson(currentLesson - 1) : setMode('intro'); }} className="flex-1"><ArrowLeft className="h-4 w-4 mr-2" />Back</Button>
+          <Button onClick={() => { stop(); currentLesson < dimensionsLessons.length - 1 ? setCurrentLesson(currentLesson + 1) : navigate('/game/physics/units-dimensions'); }} className="flex-1">{currentLesson < dimensionsLessons.length - 1 ? 'Next' : 'Start Game'}<ArrowRight className="h-4 w-4 ml-2" /></Button>
+        </div>
+      </div>
+    </AppLayout>
+  );
+};
+
+export default LearnDimensions;
