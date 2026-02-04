@@ -29,6 +29,7 @@ import GameMaths from "./pages/GameMaths";
 import GamePhysics from "./pages/GamePhysics";
 import Subjects from "./pages/Subjects";
 import Mistakes from "./pages/Mistakes";
+import LearnDimensions from "./pages/LearnDimensions";
 
 export type SigmaPiQuestion = {
   id: number;
@@ -98,6 +99,7 @@ const AppRoutes = () => {
       <Route path="/learn/physics/:topicId" element={<LearnPhysics />} />
       <Route path="/game/maths/:topicId" element={<GameMaths />} />
       <Route path="/game/physics/:topicId" element={<GamePhysics />} />
+      <Route path="/learn/physics/units-dimensions" element={<LearnDimensions />} />
     </Routes>
   );
 };

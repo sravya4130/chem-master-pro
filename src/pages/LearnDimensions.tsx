@@ -33,27 +33,16 @@ const LearnDimensions = () => {
   useEffect(() => () => stop(), [stop]);
   useEffect(() => stop(), [currentLesson, stop]);
 
-  // 🔹 CLEAN + STRUCTURE CONTENT
-  const rows = lesson.content
-    .split('\n')
-    .map(line =>
-      line
-        .replace(/\*\*/g, '')
-        .replace(/\|/g, '')
-        .replace(/^- /g, '')
-        .trim()
-    )
-    .filter(Boolean)
-    .map(line => {
-      // Expected format: Quantity : Symbol = Formula
-      const [quantityPart, rest] = line.split(':');
-      const [symbol, formula] = rest ? rest.split('=') : [];
-      return {
-        quantity: quantityPart?.trim() || '-',
-        symbol: symbol?.trim() || '-',
-        formula: formula?.trim() || '-',
-      };
-    });
+  // Structured table data for 7 base quantities
+  const baseQuantities = [
+    { sn: 1, quantity: 'Length', formula: 'l, L', dimensional: '[L]', siUnit: 'metre (m)' },
+    { sn: 2, quantity: 'Mass', formula: 'm, M', dimensional: '[M]', siUnit: 'kilogram (kg)' },
+    { sn: 3, quantity: 'Time', formula: 't, T', dimensional: '[T]', siUnit: 'second (s)' },
+    { sn: 4, quantity: 'Electric Current', formula: 'I', dimensional: '[A]', siUnit: 'ampere (A)' },
+    { sn: 5, quantity: 'Temperature', formula: 'T, θ', dimensional: '[K]', siUnit: 'kelvin (K)' },
+    { sn: 6, quantity: 'Amount of Substance', formula: 'n', dimensional: '[mol]', siUnit: 'mole (mol)' },
+    { sn: 7, quantity: 'Luminous Intensity', formula: 'Iᵥ', dimensional: '[cd]', siUnit: 'candela (cd)' },
+  ];
 
   if (mode === 'intro') {
     return (
@@ -116,8 +105,8 @@ const LearnDimensions = () => {
             progress={progress}
             onPlay={() =>
               speak(
-                rows
-                  .map(r => `${r.quantity}, symbol ${r.symbol}, formula ${r.formula}`)
+                baseQuantities
+                  .map(r => `${r.quantity}, symbol ${r.formula}, dimensional formula ${r.dimensional}, SI unit ${r.siUnit}`)
                   .join('. ')
               )
             }
@@ -129,30 +118,30 @@ const LearnDimensions = () => {
           />
         )}
 
-        {/* ✅ FIXED 3-COLUMN TABLE */}
+        {/* ✅ FIXED 5-COLUMN TABLE */}
         <div className="overflow-x-auto">
-          <div className="grid grid-cols-3 gap-2 text-sm">
-
-            <div className="font-bold bg-muted p-3 rounded-tl-xl">Quantity</div>
-            <div className="font-bold bg-muted p-3 text-center">Symbol</div>
-            <div className="font-bold bg-muted p-3 rounded-tr-xl text-center">
-              Dimensional Formula
-            </div>
-
-            {rows.map((row, i) => (
-              <>
-                <div key={`q-${i}`} className="bg-card p-3 border">
-                  {row.quantity}
-                </div>
-                <div key={`s-${i}`} className="bg-card p-3 border text-center">
-                  {row.symbol}
-                </div>
-                <div key={`f-${i}`} className="bg-card p-3 border font-mono text-center">
-                  {row.formula}
-                </div>
-              </>
-            ))}
-          </div>
+          <table className="w-full text-sm border-collapse">
+            <thead>
+              <tr className="bg-muted">
+                <th className="p-3 text-left font-bold border border-border rounded-tl-xl">S.No</th>
+                <th className="p-3 text-left font-bold border border-border">Quantity</th>
+                <th className="p-3 text-center font-bold border border-border">Formula</th>
+                <th className="p-3 text-center font-bold border border-border">Dimensional Formula</th>
+                <th className="p-3 text-center font-bold border border-border rounded-tr-xl">SI Unit</th>
+              </tr>
+            </thead>
+            <tbody>
+              {baseQuantities.map((row) => (
+                <tr key={row.sn} className="bg-card">
+                  <td className="p-3 border border-border font-semibold">{row.sn}</td>
+                  <td className="p-3 border border-border">{row.quantity}</td>
+                  <td className="p-3 border border-border text-center font-mono">{row.formula}</td>
+                  <td className="p-3 border border-border text-center font-mono text-primary">{row.dimensional}</td>
+                  <td className="p-3 border border-border text-center">{row.siUnit}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
 
       </div>

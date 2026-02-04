@@ -10,13 +10,36 @@ import { useSpeech } from '@/hooks/useSpeech';
 // Helper for cn
 const cn = (...classes: (string | boolean | undefined)[]) => classes.filter(Boolean).join(' ');
 
-const tutorMessages: Record<string, string> = {
-  alex: "Welcome! I am Alex. I'll make chemistry fun and easy for you. Let's explore molecules together!",
-  david: "Hey there! I'm David. Together we'll conquer every chemistry concept. Ready to learn?",
-  sravya: "Hi! I'm Sravya. I'll guide you through your learning journey and help you master every concept.",
-  olivia: "Hello! I'm Olivia. Let's make organic chemistry your strength. I'm here to help!",
-  mermi: "Greetings! I'm Mermi. Chemical reactions are my specialty. Let's begin our adventure!",
-  ogneson: "Welcome learner! I'm Ogneson. With my help, you'll ace JEE chemistry. Let's get started!",
+const tutorMessages: Record<string, Record<string, string>> = {
+  chemistry: {
+    alex: "Welcome! I am Alex. I'll make chemistry fun and easy for you. Let's explore molecules together!",
+    david: "Hey there! I'm David. Together we'll conquer every chemistry concept. Ready to learn?",
+    sravya: "Hi! I'm Sravya. I'll guide you through organic chemistry and help you master every reaction.",
+    olivia: "Hello! I'm Olivia. Let's make organic chemistry your strength. I'm here to help!",
+    mermi: "Greetings! I'm Mermi. Chemical reactions are my specialty. Let's begin our adventure!",
+    ogneson: "Welcome learner! I'm Ogneson. With my help, you'll ace JEE chemistry. Let's get started!",
+  },
+  physics: {
+    alex: "Hey! I'm Alex. Physics is all about understanding the world. Let's decode motion and forces!",
+    david: "Hi there! I'm David. Physics made simple is my motto. Ready to master mechanics?",
+    sravya: "Hello! I'm Sravya. From projectiles to dimensions, I'll make physics crystal clear!",
+    olivia: "Welcome! I'm Olivia. Let's tackle physics formulas and concepts together!",
+    mermi: "Greetings! I'm Mermi. Laws of physics are fascinating. Let's explore them!",
+    ogneson: "Welcome! I'm Ogneson, your physics professor. Dimensions, motion - we'll master it all!",
+  },
+  mathematics: {
+    alex: "Hey! I'm Alex. Math is the language of universe. Let's solve problems together!",
+    david: "Hi! I'm David. From trigonometry to calculus, I'll guide you step by step!",
+    sravya: "Hello! I'm Sravya. Math is fun when you understand it. Let's begin!",
+    olivia: "Welcome! I'm Olivia. Formulas, equations, proofs - we'll conquer them all!",
+    mermi: "Greetings! I'm Mermi. Numbers are my friends. Let's make them yours too!",
+    ogneson: "Welcome! I'm Ogneson. Mathematics is beautiful. Let me show you why!",
+  },
+};
+
+const getDefaultMessage = (tutorName: string, subject: string) => {
+  const subjectText = subject === 'mathematics' ? 'maths' : subject;
+  return `Welcome! I am ${tutorName}. I'll guide you through ${subjectText} and help you master every concept.`;
 };
 
 const SelectTutor = () => {
@@ -44,19 +67,20 @@ const SelectTutor = () => {
     }
   };
 
+  const getTutorMessage = (tutor: Tutor) => {
+    const subject = selectedSubject || 'chemistry';
+    return tutorMessages[subject]?.[tutor.id] || getDefaultMessage(tutor.name, subject);
+  };
+
   const handleTutorClick = (tutor: Tutor) => {
     setSelectedTutor(tutor);
     setShowMessage(true);
-    
-    // Speak the welcome message
-    const message = tutorMessages[tutor.id] || `Welcome! I am ${tutor.name}. I'll guide you through your learning journey.`;
-    speak(message);
+    speak(getTutorMessage(tutor));
   };
 
   const handleSpeakAgain = () => {
     if (selectedTutor) {
-      const message = tutorMessages[selectedTutor.id] || `Welcome! I am ${selectedTutor.name}. I'll guide you through your learning journey.`;
-      speak(message);
+      speak(getTutorMessage(selectedTutor));
     }
   };
 
@@ -109,7 +133,7 @@ const SelectTutor = () => {
                   Welcome, I am {selectedTutor.name}! 👋
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  {tutorMessages[selectedTutor.id] || `I'll guide you through your learning journey and help you master every concept.`}
+                  {getTutorMessage(selectedTutor)}
                 </p>
               </div>
               {isSupported && (
