@@ -19,6 +19,7 @@ const navItems = [
   { to: '/achievements', icon: Trophy, label: 'Achievements' },
   { to: '/about', icon: Info, label: 'About Us' },
   { to: '/settings', icon: Settings, label: 'Settings' },
+  { to: '/signup', icon: LogIn, label: 'Sign Up' },
 ];
 
 export const AppSidebar = () => {

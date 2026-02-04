@@ -54,7 +54,7 @@ const Index = () => {
   const handleNavigate = (subject: string, path: string) => {
     playClick();
     setSelectedSubject(subject);
-    navigate(path);
+    navigate('/select-tutor');
   };
 
   const subjects = [
