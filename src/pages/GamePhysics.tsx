@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { useApp } from '@/contexts/AppContext';
+import { useMistakes } from '@/contexts/MistakeContext';
 import { Button } from '@/components/ui/button';
 import { GameTimer } from '@/components/game/GameTimer';
 import { ScoreDisplay } from '@/components/game/ScoreDisplay';
@@ -13,6 +14,7 @@ const GamePhysics = () => {
   const navigate = useNavigate();
   const { topicId } = useParams();
   const { addXP, selectedTutor, setUserProgress } = useApp();
+  const { addMistake } = useMistakes();
 
   const getQuestions = (): PhysicsQuestion[] => {
     switch (topicId) {
@@ -73,6 +75,16 @@ const GamePhysics = () => {
     } else {
       setStreak(0);
       toast.error('Not quite right!');
+      
+      // Record the mistake
+      addMistake({
+        subject: 'physics',
+        topic: getTopicName(),
+        topicId: topicId || 'physics',
+        question: currentQuestion.question,
+        userAnswer: selectedAnswer,
+        correctAnswer: currentQuestion.answer,
+      });
     }
   };
 
