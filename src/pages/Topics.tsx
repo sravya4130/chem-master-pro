@@ -2,13 +2,22 @@ import { useNavigate } from 'react-router-dom';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { useApp } from '@/contexts/AppContext';
 import { TopicCard } from '@/components/topics/TopicCard';
-import { Atom, Link2, FileText } from 'lucide-react';
+import { Atom, Link2, FileText, FlaskConical } from 'lucide-react';
 
 const Topics = () => {
   const navigate = useNavigate();
   const { userProgress, selectedTutor } = useApp();
 
   const topics = [
+    {
+      id: 'basic-concepts',
+      title: 'Some Basic Concepts of Chemistry',
+      description: 'Matter, Mole, Solutions, Molarity & more',
+      icon: <FlaskConical className="h-7 w-7 text-primary-foreground" />,
+      color: 'pink' as const,
+      progress: userProgress.completedTopics.includes('basic-concepts') ? 100 : 0,
+      isCompleted: userProgress.completedTopics.includes('basic-concepts'),
+    },
     {
       id: 'hybridisation',
       title: 'Hybridisation',

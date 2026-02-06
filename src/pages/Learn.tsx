@@ -2,6 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import LearnIUPAC from './LearnIUPAC';
 import LearnHybridisation from './LearnHybridisation';
 import LearnSigmaPi from './LearnSigmaPi';
+import LearnBasicConcepts from './LearnBasicConcepts';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Construction } from 'lucide-react';
@@ -11,6 +12,10 @@ const Learn = () => {
   const navigate = useNavigate();
 
   // Route to specific topic pages
+  if (topicId === 'basic-concepts') {
+    return <LearnBasicConcepts />;
+  }
+
   if (topicId === 'iupac') {
     return <LearnIUPAC />;
   }
