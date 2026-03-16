@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'sonner';
 import { Check, X, Eye, EyeOff, UserPlus } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface ValidationState {
   hasMinLetters: boolean;
@@ -17,6 +18,7 @@ interface ValidationState {
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const { signup } = useAuth();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -56,20 +58,20 @@ const SignUp = () => {
 
     setIsLoading(true);
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-
-    // Store user data locally (for demo)
-    const userData = {
-      name: name.trim(),
-      email: email.trim(),
-      createdAt: new Date().toISOString(),
-    };
-    localStorage.setItem('chemlearn-user', JSON.stringify(userData));
-
-    toast.success('Account created successfully! 🎉');
-    setIsLoading(false);
-    navigate('/');
+    try {
+      await signup(email.trim(), password, name.trim());
+      toast.success('Account created successfully! 🎉');
+      navigate('/');
+    } catch (error: any) {
+      const msg = error?.message || 'Failed to create account';
+      if (msg.includes('email-already-in-use')) {
+        toast.error('This email is already registered');
+      } else {
+        toast.error(msg);
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const ValidationIcon = ({ valid }: { valid: boolean }) => (

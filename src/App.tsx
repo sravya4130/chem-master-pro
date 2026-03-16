@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AppProvider } from "./contexts/AppContext";
+import { AuthProvider } from "./contexts/AuthContext";
 import { MistakeProvider } from "./contexts/MistakeContext";
 import Index from "./pages/Index";
 import SelectSubject from "./pages/SelectSubject";
@@ -30,6 +31,7 @@ import GamePhysics from "./pages/GamePhysics";
 import Subjects from "./pages/Subjects";
 import Mistakes from "./pages/Mistakes";
 import LearnDimensions from "./pages/LearnDimensions";
+import GameBasicConcepts from "./pages/GameBasicConcepts";
 
 export type SigmaPiQuestion = {
   id: number;
@@ -99,24 +101,27 @@ const AppRoutes = () => {
       <Route path="/learn/physics/:topicId" element={<LearnPhysics />} />
       <Route path="/game/maths/:topicId" element={<GameMaths />} />
       <Route path="/game/physics/:topicId" element={<GamePhysics />} />
-      <Route path="/learn/physics/units-dimensions" element={<LearnDimensions />} />
+       <Route path="/learn/physics/units-dimensions" element={<LearnDimensions />} />
+       <Route path="/game/basic-concepts" element={<GameBasicConcepts />} />
     </Routes>
   );
 };
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <AppProvider>
-      <MistakeProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <AppRoutes />
-          </BrowserRouter>
-        </TooltipProvider>
-      </MistakeProvider>
-    </AppProvider>
+    <AuthProvider>
+      <AppProvider>
+        <MistakeProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <AppRoutes />
+            </BrowserRouter>
+          </TooltipProvider>
+        </MistakeProvider>
+      </AppProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 
