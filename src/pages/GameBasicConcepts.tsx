@@ -215,7 +215,7 @@ const GameBasicConcepts = () => {
     setSelectedAnswer(null);
     setIsCorrect(null);
     setGameOver(false);
-    setTimeLeft(30);
+    setTimerKey(prev => prev + 1);
   };
 
   if (!question && !gameOver) return null;
