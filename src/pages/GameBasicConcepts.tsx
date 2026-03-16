@@ -231,8 +231,8 @@ const GameBasicConcepts = () => {
           <div className="max-w-2xl mx-auto space-y-6">
             {/* Header */}
             <div className="flex items-center justify-between">
-              <ScoreDisplay score={score} totalQuestions={shuffledQuestions.length} xp={totalXP} />
-              <GameTimer timeLeft={timeLeft} setTimeLeft={setTimeLeft} onTimeUp={handleTimeUp} isActive={!selectedAnswer && !gameOver} />
+              <ScoreDisplay score={score} streak={0} xpEarned={totalXP} />
+              <GameTimer key={timerKey} duration={30} onTimeUp={handleTimeUp} isRunning={!selectedAnswer && !gameOver} />
             </div>
 
             {/* Progress */}
