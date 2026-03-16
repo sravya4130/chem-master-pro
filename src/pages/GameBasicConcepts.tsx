@@ -163,7 +163,7 @@ const GameBasicConcepts = () => {
           setCurrentQuestion(prev => prev + 1);
           setSelectedAnswer(null);
           setIsCorrect(null);
-          setTimeLeft(30);
+          setTimerKey(prev => prev + 1);
         } else {
           setGameOver(true);
         }
