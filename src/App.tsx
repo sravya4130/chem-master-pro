@@ -31,6 +31,7 @@ import GamePhysics from "./pages/GamePhysics";
 import Subjects from "./pages/Subjects";
 import Mistakes from "./pages/Mistakes";
 import LearnDimensions from "./pages/LearnDimensions";
+import GameBasicConcepts from "./pages/GameBasicConcepts";
 
 export type SigmaPiQuestion = {
   id: number;
