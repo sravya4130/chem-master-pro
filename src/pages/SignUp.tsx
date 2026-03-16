@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'sonner';
 import { Check, X, Eye, EyeOff, UserPlus } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface ValidationState {
   hasMinLetters: boolean;
