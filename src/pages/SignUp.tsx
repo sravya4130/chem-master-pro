@@ -18,6 +18,7 @@ interface ValidationState {
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const { signup } = useAuth();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
