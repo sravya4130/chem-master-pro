@@ -101,7 +101,8 @@ const AppRoutes = () => {
       <Route path="/learn/physics/:topicId" element={<LearnPhysics />} />
       <Route path="/game/maths/:topicId" element={<GameMaths />} />
       <Route path="/game/physics/:topicId" element={<GamePhysics />} />
-      <Route path="/learn/physics/units-dimensions" element={<LearnDimensions />} />
+       <Route path="/learn/physics/units-dimensions" element={<LearnDimensions />} />
+       <Route path="/game/basic-concepts" element={<GameBasicConcepts />} />
     </Routes>
   );
 };
