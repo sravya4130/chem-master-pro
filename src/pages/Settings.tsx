@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { useApp, Tutor } from '@/contexts/AppContext';
 import { Button } from '@/components/ui/button';
@@ -10,6 +10,7 @@ import {
   Bell, 
   Volume2, 
   Moon, 
+  Sun,
   Trash2, 
   Save,
   Edit2,
@@ -24,11 +25,28 @@ const Settings = () => {
     Object.fromEntries(tutors.map(t => [t.id, t.name]))
   );
 
+  const [darkMode, setDarkMode] = useState(() => {
+    const saved = localStorage.getItem('chemlearn-darkmode');
+    return saved !== null ? JSON.parse(saved) : true; // default dark
+  });
+
   const [settings, setSettings] = useState({
     notifications: true,
     sound: true,
-    darkMode: false,
   });
+
+  // Apply dark/light mode
+  useEffect(() => {
+    const root = document.documentElement;
+    if (darkMode) {
+      root.classList.add('dark');
+      root.classList.remove('light');
+    } else {
+      root.classList.add('light');
+      root.classList.remove('dark');
+    }
+    localStorage.setItem('chemlearn-darkmode', JSON.stringify(darkMode));
+  }, [darkMode]);
 
   const saveTutorNames = () => {
     const updatedTutors = tutors.map(tutor => ({
@@ -162,12 +180,15 @@ const Settings = () => {
             </div>
             <div className="p-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <Moon className="h-5 w-5 text-muted-foreground" />
-                <span>Dark Mode</span>
+                {darkMode ? <Moon className="h-5 w-5 text-muted-foreground" /> : <Sun className="h-5 w-5 text-muted-foreground" />}
+                <div>
+                  <span>Dark Mode</span>
+                  <p className="text-xs text-muted-foreground">{darkMode ? 'Currently dark theme' : 'Currently light theme'}</p>
+                </div>
               </div>
               <Switch
-                checked={settings.darkMode}
-                onCheckedChange={(checked) => setSettings({ ...settings, darkMode: checked })}
+                checked={darkMode}
+                onCheckedChange={setDarkMode}
               />
             </div>
           </div>
