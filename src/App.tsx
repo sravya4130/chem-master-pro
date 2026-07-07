@@ -33,6 +33,8 @@ import Mistakes from "./pages/Mistakes";
 import LearnDimensions from "./pages/LearnDimensions";
 import GameBasicConcepts from "./pages/GameBasicConcepts";
 import YouTubeNotes from "./pages/YouTubeNotes";
+import PeriodicTable from "./pages/PeriodicTable";
+import ElementDetail from "./pages/ElementDetail";
 
 export type SigmaPiQuestion = {
   id: number;
@@ -105,6 +107,8 @@ const AppRoutes = () => {
        <Route path="/learn/physics/units-dimensions" element={<LearnDimensions />} />
        <Route path="/game/basic-concepts" element={<GameBasicConcepts />} />
        <Route path="/youtube-notes" element={<YouTubeNotes />} />
+       <Route path="/periodic-table" element={<PeriodicTable />} />
+       <Route path="/periodic-table/:elementId" element={<ElementDetail />} />
     </Routes>
   );
 };

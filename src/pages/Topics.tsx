@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { useApp } from '@/contexts/AppContext';
 import { TopicCard } from '@/components/topics/TopicCard';
-import { Atom, Link2, FileText, FlaskConical } from 'lucide-react';
+import { Atom, Link2, FileText, FlaskConical, Grid3x3 } from 'lucide-react';
 
 const Topics = () => {
   const navigate = useNavigate();
@@ -17,6 +17,15 @@ const Topics = () => {
       color: 'pink' as const,
       progress: userProgress.completedTopics.includes('basic-concepts') ? 100 : 0,
       isCompleted: userProgress.completedTopics.includes('basic-concepts'),
+    },
+    {
+      id: 'periodic-table',
+      title: 'Interactive Periodic Table',
+      description: 'Explore all 118 elements with AI voice tutor',
+      icon: <Grid3x3 className="h-7 w-7 text-primary-foreground" />,
+      color: 'purple' as const,
+      progress: userProgress.completedTopics.includes('periodic-table') ? 100 : 0,
+      isCompleted: userProgress.completedTopics.includes('periodic-table'),
     },
     {
       id: 'hybridisation',
@@ -71,7 +80,7 @@ const Topics = () => {
             <TopicCard
               key={topic.id}
               {...topic}
-              onClick={() => navigate(`/learn/${topic.id}`)}
+              onClick={() => navigate(topic.id === 'periodic-table' ? '/periodic-table' : `/learn/${topic.id}`)}
             />
           ))}
         </div>
