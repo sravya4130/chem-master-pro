@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Menu, Home, BookOpen, Users, MessageCircle, Settings, Info, Trophy, Flame, X, Beaker, Atom, Calculator, UserCircle, AlertTriangle, LogIn, Youtube } from 'lucide-react';
+import { Menu, Home, BookOpen, Users, MessageCircle, Settings, Info, Trophy, Flame, X, Beaker, Atom, Calculator, UserCircle, AlertTriangle, LogIn, Youtube, Grid3x3 } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 import { useApp } from '@/contexts/AppContext';
 import { useMistakes } from '@/contexts/MistakeContext';
@@ -10,6 +10,7 @@ const navItems = [
   { to: '/', icon: Home, label: 'Home' },
   { to: '/subjects', icon: BookOpen, label: 'Subjects' },
   { to: '/topics', icon: Beaker, label: 'Chemistry Topics' },
+  { to: '/periodic-table', icon: Grid3x3, label: 'Periodic Table' },
   { to: '/topics/physics', icon: Atom, label: 'Physics Topics' },
   { to: '/topics/maths', icon: Calculator, label: 'Mathematics Topics' },
   { to: '/tutors', icon: UserCircle, label: 'Tutors' },
