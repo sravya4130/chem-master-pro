@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { useApp } from '@/contexts/AppContext';
 import { TopicCard } from '@/components/topics/TopicCard';
-import { Atom, Link2, FileText, FlaskConical, Grid3x3 } from 'lucide-react';
+import { Atom, Link2, FileText, FlaskConical, Grid3x3, Beaker } from 'lucide-react';
 
 const Topics = () => {
   const navigate = useNavigate();
@@ -26,6 +26,15 @@ const Topics = () => {
       color: 'purple' as const,
       progress: userProgress.completedTopics.includes('periodic-table') ? 100 : 0,
       isCompleted: userProgress.completedTopics.includes('periodic-table'),
+    },
+    {
+      id: 'organic-chemistry',
+      title: 'Organic Chemistry Laboratory',
+      description: '17 chapters · 16 functional groups · animated reaction mechanisms',
+      icon: <Beaker className="h-7 w-7 text-primary-foreground" />,
+      color: 'orange' as const,
+      progress: userProgress.completedTopics.includes('organic-chemistry') ? 100 : 0,
+      isCompleted: userProgress.completedTopics.includes('organic-chemistry'),
     },
     {
       id: 'hybridisation',
@@ -80,7 +89,11 @@ const Topics = () => {
             <TopicCard
               key={topic.id}
               {...topic}
-              onClick={() => navigate(topic.id === 'periodic-table' ? '/periodic-table' : `/learn/${topic.id}`)}
+              onClick={() => navigate(
+                topic.id === 'periodic-table' ? '/periodic-table'
+                : topic.id === 'organic-chemistry' ? '/organic-chemistry'
+                : `/learn/${topic.id}`
+              )}
             />
           ))}
         </div>
